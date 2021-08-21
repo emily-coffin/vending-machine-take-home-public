@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using VendingMachine;
 using VendingMachine.Models;
@@ -27,7 +28,7 @@ namespace UnitTests
         [InlineData("Cola", 1.00)]
         [InlineData("Chips", 0.50)]
         [InlineData("Candy", 0.65)]
-        public void BuyProductReturnsProductWhenSelected(string productName, double price)
+        public void BuyProductReturnsProductWhenSelectedIfAvailable(string productName, double price)
         {
             var products = new List<Product>
             {
@@ -43,29 +44,20 @@ namespace UnitTests
             product.Should().BeEquivalentTo(expectedProduct);
         }
 
-        [Theory]
-        [InlineData("Cola", true)]
-        [InlineData("Chips", true)]
-        [InlineData("Candy", true)]
-        [InlineData("Cola", false)]
-        [InlineData("Chips", false)]
-        [InlineData("Candy", false)]
-        public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
+        [Fact]
+        public void BuyProductThrowsExceptionWhenProductIsUnavailable()
         {
-            var products = new List<Product>()
+            var desiredProduct = "Cola";
+            var products = new List<Product>
             {
-                new Product() { Name = "FakeProduct" }
+                new Product() { Name = "Chips", Price = 0.50 },
+                new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            if (expectedAvailability == true)
-            {
-                products.Add(new Product() { Name = productName });
-            }
-
             var machine = new Machine(products);
-            var isAvailable = machine.CanBuyProduct(productName);
-
-            isAvailable.Should().Be(expectedAvailability);
+            Action act = () => machine.BuyProduct(desiredProduct);
+            
+            act.Should().Throw<Exception>().WithMessage($"Unable to purchase {desiredProduct}");
         }
 
         [Theory]
@@ -85,5 +77,19 @@ namespace UnitTests
             };
             coinsPaid.Should().BeEquivalentTo(expectedCoinList);
         }
+
+        // [Fact]
+        // public void MakeChangeReturnsChangeToCustomer()
+        // {
+        //     var products = new List<Product>
+        //     {
+        //         new Product() { Name = "Cola", Price = 1.00 },
+        //         new Product() { Name = "Chips", Price = 0.50 },
+        //         new Product() { Name = "Candy", Price = 0.65 }
+        //     };
+
+        //     var machine = new Machine(products);
+        //     var product = machine.MakeChange(productName);
+        // }
     }
 }

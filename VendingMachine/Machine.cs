@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VendingMachine.Models;
@@ -17,15 +18,14 @@ namespace VendingMachine
 
         public Product BuyProduct(string productName)
         {
+            if(!CanBuyProduct(productName))
+            {
+                throw new Exception($"Unable to purchase {productName}");
+            }
+
             return products
                    .Where(product => product.Name == productName)
                    .FirstOrDefault();
-        }
-
-        public bool CanBuyProduct(string productName)
-        {
-            return products
-                   .Any(product => product.Name == productName);
         }
 
         public void AddCoinsToPayment(double weight, double diameter, double thinkness)
@@ -37,6 +37,12 @@ namespace VendingMachine
         public List<Coin> GetAllCoinsPaid()
         {
             return coinsPaid;
+        }
+
+        private bool CanBuyProduct(string productName)
+        {
+            return products
+                   .Any(product => product.Name == productName);
         }
 
         private Coin FindCoin(double weight, double diameter, double thinkness)
