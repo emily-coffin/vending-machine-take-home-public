@@ -48,7 +48,15 @@ namespace UnitTests
                 new Product() { Name = "Cola", Price = 1.00 },
             };
 
-            var machine = new Machine(products, null);
+            var coinsPaid = new List<Coin>()
+            {
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
+            };
+
+            var machine = new Machine(products, coinsPaid);
             var product = machine.BuyProduct("Cola");
 
             product.Should().BeOfType<Product>();

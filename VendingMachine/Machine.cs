@@ -47,7 +47,8 @@ namespace VendingMachine
         private bool CanBuyProduct(string productName)
         {
             return products
-                   .Any(product => product.Name == productName);
+                   .Any(product => (product.Name == productName) &&
+                                   (product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2)));
         }
 
         private Coin FindCoin(double weight, double diameter, double thinkness)
