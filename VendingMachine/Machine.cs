@@ -53,6 +53,12 @@ namespace VendingMachine
         public bool AddCoinsToPayment(double weight, double diameter, double thinkness)
         {
             var coin = FindCoin(weight, diameter, thinkness);
+            
+            if(coin.Name == "Penny")
+            {
+                return false;
+            }
+
             coinsPaid.Add(coin);
 
             return true;
