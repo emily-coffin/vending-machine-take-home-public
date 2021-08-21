@@ -62,14 +62,20 @@ namespace UnitTests
         [InlineData("Cola", true)]
         [InlineData("Chips", true)]
         [InlineData("Candy", true)]
+        [InlineData("Cola", false)]
+        [InlineData("Chips", false)]
+        [InlineData("Candy", false)]
         public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
         {
-            var products = new List<Product>
+            var products = new List<Product>()
             {
-                new Product() { Name = "Cola", Price = 1.00 },
-                new Product() { Name = "Chips", Price = 0.50 },
-                new Product() { Name = "Candy", Price = 0.65 }
+                new Product() { Name = "FakeProduct" }
             };
+
+            if (expectedAvailability == true)
+            {
+                products.Add(new Product() { Name = productName });
+            }
 
             var machine = new Machine(products);
             var isAvailable = machine.CanBuyProduct(productName);
