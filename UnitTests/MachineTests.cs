@@ -199,6 +199,24 @@ namespace UnitTests
         }
 
         [Fact]
+        public void MakeChangeReturnsNoChangeWhenNotOverPurchaseAmount()
+        {
+            var productName = "Cola";
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 }
+            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
+                            .ToList();
+
+            var machine = new Machine(products, coinsPaid);
+            var change = machine.MakeChange(productName);
+
+            change.Should().BeEquivalentTo(new List<Coin>());
+        }
+
+        [Fact]
         public void FindCoinByNameReturnsCoinWhenGivenValidName()
         {
             var machine = new Machine(new List<Product>(), new List<Coin>());
