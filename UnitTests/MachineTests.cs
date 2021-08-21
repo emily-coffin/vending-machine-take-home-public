@@ -12,7 +12,7 @@ namespace UnitTests
         public void BuyProductReturnsProductType()
         {
             var machine = new Machine();
-            var product = machine.BuyProduct(null);
+            var product = machine.BuyProduct("Cola");
 
             product.Should().BeOfType<Product>();
         }
