@@ -62,15 +62,21 @@ namespace VendingMachine
 
             if(totalPaid > prodcutCost)
             {
+                var sortedCoins = coins.OrderByDescending(coin => coin.Value);
                 var totalOver = totalPaid - prodcutCost;
                 var coinsReturned = new List<Coin>();
                 var totalLeft = totalOver;
 
                 while(totalLeft >= totalOver)
                 {
-                    foreach(Coin coin in coins)
+                    foreach(Coin coin in sortedCoins)
                     {
                         if(coin.Value == totalLeft)
+                        {
+                            coinsReturned.Add(coin);
+                            totalLeft -= coin.Value;
+                        }
+                        else if(coin.Value < totalLeft)
                         {
                             coinsReturned.Add(coin);
                             totalLeft -= coin.Value;

@@ -153,13 +153,15 @@ namespace UnitTests
             var coinsPaid = Enumerable
                             .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },5)
                             .ToList();
+            coinsPaid.Add(new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 });
 
             var machine = new Machine(products, coinsPaid);
             var change = machine.MakeChange(productName);
 
             var expectedChange = new List<Coin>()
             {
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
+                new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 }
             };
             change.Should().BeEquivalentTo(expectedChange);
         }
