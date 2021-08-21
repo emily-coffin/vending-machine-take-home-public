@@ -15,3 +15,11 @@ To run test suite use the build and run-tests script within the Scripts director
 ```sh
 ./scripts/build.sh && ./scripts/run_tests.sh
 ```
+
+## Run Console
+
+To run test suite use the build and run script within the Scripts directory.
+
+```sh
+./scripts/build.sh && ./scripts/run.sh
+```
