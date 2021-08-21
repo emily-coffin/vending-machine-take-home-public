@@ -7,8 +7,8 @@ namespace VendingMachine
 {
     public class Machine
     {
-        private List<Product> products;
-        private List<Coin> coinsPaid;
+        private List<Product> products = new List<Product>();
+        private List<Coin> coinsPaid = new List<Coin>();
 
         public Machine(List<Product> products, List<Coin> coinsPaid)
         {
