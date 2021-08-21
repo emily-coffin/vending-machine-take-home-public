@@ -7,6 +7,14 @@ namespace VendingMachine
 {
     public class Machine
     {
+        private List<Coin> coins = new List<Coin>()
+        {
+            new Coin() { Name = "Penny", Value = 0.01, Weight = 2.5, Diameter = 0.75, Thinkness = 1.52 },
+            new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 },
+            new Coin() { Name = "Dime", Value = 0.10, Weight = 2.268, Diameter = 0.705, Thinkness = 1.35 },
+            new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
+        };
+
         private List<Product> products = new List<Product>();
         private List<Coin> coinsPaid = new List<Coin>();
 
@@ -44,6 +52,38 @@ namespace VendingMachine
             coinsPaid.Add(coin);
         }
 
+        public List<Coin> MakeChange(string productName)
+        {
+            var prodcutCost = Math.Round(products
+                              .Where(product => product.Name == productName)
+                              .FirstOrDefault()
+                              .Price, 2);
+            var totalPaid = Math.Round(coinsPaid.Sum(coin => coin.Value), 2);
+
+            if(totalPaid > prodcutCost)
+            {
+                var totalOver = totalPaid - prodcutCost;
+                var coinsReturned = new List<Coin>();
+                var totalLeft = totalOver;
+
+                while(totalLeft >= totalOver)
+                {
+                    foreach(Coin coin in coins)
+                    {
+                        if(coin.Value == totalLeft)
+                        {
+                            coinsReturned.Add(coin);
+                            totalLeft -= coin.Value;
+                        }
+                    }
+                }
+
+                return coinsReturned;
+            }
+
+            return null;
+        }
+
         private bool CanBuyProduct(string productName)
         {
             return products
@@ -53,14 +93,6 @@ namespace VendingMachine
 
         private Coin FindCoin(double weight, double diameter, double thinkness)
         {
-            List<Coin> coins = new List<Coin>()
-            {
-                new Coin() { Name = "Penny", Value = 0.01, Weight = 2.5, Diameter = 0.75, Thinkness = 1.52 },
-                new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 },
-                new Coin() { Name = "Dime", Value = 0.10, Weight = 2.268, Diameter = 0.705, Thinkness = 1.35 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-            };
-
             return coins
                    .Where(coin => coin.Weight == weight && coin.Diameter == diameter && coin.Thinkness == thinkness)
                    .FirstOrDefault();

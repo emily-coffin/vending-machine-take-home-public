@@ -173,7 +173,7 @@ namespace UnitTests
             {
                 new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
             };
-            change.Should().Be(expectedChange);
+            change.Should().BeEquivalentTo(expectedChange);
         }
     }
 }
