@@ -6,7 +6,11 @@ namespace VendingMachine
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            // Happy path
+            //Display Items
+            // Allow adding of coins
+            // Customer picks product
+            // Returns product
         }
     }
 }
