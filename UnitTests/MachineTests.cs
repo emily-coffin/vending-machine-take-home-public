@@ -19,12 +19,12 @@ namespace UnitTests
         }
 
         [Theory]
-        [InlineData("Cola")]
-        [InlineData("Chips")]
-        [InlineData("Candy")]
-        public void BuyProductReturnsProductWhenSelected(string productName)
+        [InlineData("Cola", 1.00)]
+        [InlineData("Chips", 0.50)]
+        [InlineData("Candy", 0.65)]
+        public void BuyProductReturnsProductWhenSelected(string productName, double price)
         {
-            var expectedProduct = new Product() { Name = productName };
+            var expectedProduct = new Product() { Name = productName, Price = price };
 
             var machine = new Machine();
             var product = machine.BuyProduct(productName);
@@ -33,7 +33,7 @@ namespace UnitTests
         }
 
         [Theory]
-        [InlineData( 0.01, 2.5, 0.75, 1.52)]
+        [InlineData(0.01, 2.5, 0.75, 1.52)]
         [InlineData(0.05, 5, 0.835, 1.95)]
         [InlineData(0.10, 2.268, 0.705, 1.35)]
         [InlineData(0.25, 5.67, 0.955, 1.75)]
@@ -46,5 +46,17 @@ namespace UnitTests
 
             value.Should().Be(expectedValue);
         }
+
+        // [Theory]
+        // [InlineData("Cola", true)]
+        // [InlineData("Chips", true)]
+        // [InlineData("Candy", true)]
+        // public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
+        // {
+        //     var machine = new Machine();
+        //     var isAvailable = machine.CanBuyProduct(productName);
+
+        //     isAvailable.Should().Be(expectedAvailability);
+        // }
     }
 }
