@@ -10,9 +10,9 @@ namespace VendingMachine
         {
             var products = new List<Product>
             {
-                new Product() { Name = "Cola"},
-                new Product() { Name = "Chips"},
-                new Product() { Name = "Candy"}
+                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Chips", Price = 0.50 },
+                new Product() { Name = "Candy", Price = 0.65 }
             };
 
             return products
