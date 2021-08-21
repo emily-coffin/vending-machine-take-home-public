@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using VendingMachine.Models;
 
 namespace VendingMachine
@@ -48,11 +49,13 @@ namespace VendingMachine
 
             try
             {
-                var product = machine.BuyProduct(productChosen);
+                System.Console.WriteLine($"\n\n");
+                
                 var change = machine.MakeChange(productChosen);
+                var product = machine.BuyProduct(productChosen);
 
                 System.Console.WriteLine($"Product: {productChosen}");
-                System.Console.WriteLine($"CHANGE: {change}");
+                System.Console.WriteLine($"CHANGE: ${Math.Round(change.Sum(x => x.Value), 2)}");
                 System.Console.WriteLine("THANK YOU");
             }
             catch(Exception ex)
