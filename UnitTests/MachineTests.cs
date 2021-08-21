@@ -49,13 +49,10 @@ namespace UnitTests
                 new Product() { Name = "Cola", Price = 1.00 },
             };
 
-            var coinsPaid = new List<Coin>()
-            {
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
+                            .ToList();
+
 
             var machine = new Machine(products, coinsPaid);
             var product = machine.BuyProduct("Cola");
@@ -76,13 +73,9 @@ namespace UnitTests
                 new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            var coinsPaid = new List<Coin>()
-            {
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
+                            .ToList();
 
             var machine = new Machine(products, coinsPaid);
             var product = machine.BuyProduct(productName);
@@ -101,13 +94,10 @@ namespace UnitTests
                 new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            var coinsPaid = new List<Coin>()
-            {
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
+                            .ToList();
+
 
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
@@ -124,11 +114,9 @@ namespace UnitTests
                 new Product() { Name = "Cola", Price = 1.00 },
             };
 
-            var coinsPaid = new List<Coin>()
-            {
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 2)
+                            .ToList();
 
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
