@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using VendingMachine;
@@ -153,26 +154,26 @@ namespace UnitTests
             coinsPaid.Should().BeEquivalentTo(expectedCoinList);
         }
 
-    //     [Fact]
-    //     public void MakeChangeReturnsChangeToCustomer()
-    //     {
-    //         var products = new List<Product>
-    //         {
-    //             new Product() { Name = "Cola", Price = 1.00 },
-    //             new Product() { Name = "Chips", Price = 0.50 },
-    //             new Product() { Name = "Candy", Price = 0.65 }
-    //         };
-
-    //         var machine = new Machine(products, payment);
-    //         var product = machine.MakeChange(productName);
-
-    //         machine.AddCoinsToPayment(weight, diameter, thinkness);
-    //     }
-
-
-        private void AddCoinsToPayment()
+        [Fact]
+        public void MakeChangeReturnsChangeToCustomer()
         {
+            var productName = "Cola";
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 }
+            };
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },5)
+                            .ToList();
 
+            var machine = new Machine(products, coinsPaid);
+            var change = machine.MakeChange(productName);
+
+            var expectedChange = new List<Coin>()
+            {
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
+            };
+            change.Should().Be(expectedChange);
         }
     }
 }
