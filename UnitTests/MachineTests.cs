@@ -82,18 +82,22 @@ namespace UnitTests
             isAvailable.Should().Be(expectedAvailability);
         }
 
-        // [Theory]
-        // [InlineData("Penny", 0.01, 2.5, 0.75, 1.52)]
-        // [InlineData("Nickle", 0.05, 5, 0.835, 1.95)]
-        // [InlineData("Dime", 0.10, 2.268, 0.705, 1.35)]
-        // [InlineData("Quarter", 0.25, 5.67, 0.955, 1.75)]
-        // public void AddCoinsToPaymentAppendsCoinsEnteredByCustomer(double expectedValue, double weight, double diameter, double thinkness)
-        // {
-        //     var machine = new Machine(null);
-        //     var value = machine.AddCoinsToPayment(weight, diameter, thinkness);
+        [Theory]
+        [InlineData("Penny", 0.01, 2.5, 0.75, 1.52)]
+        [InlineData("Nickle", 0.05, 5, 0.835, 1.95)]
+        [InlineData("Dime", 0.10, 2.268, 0.705, 1.35)]
+        [InlineData("Quarter", 0.25, 5.67, 0.955, 1.75)]
+        public void AddCoinsToPaymentAppendsCoinsEnteredByCustomer(string name, double value, double weight, double diameter, double thinkness)
+        {
+            var machine = new Machine(null);
+            machine.AddCoinsToPayment(weight, diameter, thinkness);
+            var coinsPaid = machine.GetAllCoinsPaid();
 
-        //     var expectedCoinList =
-        //     return
-        // }
+            var expectedCoinList = new List<Coin>()
+            {
+                new Coin() { Name = name, Value = value, Weight = weight, Diameter = diameter, Thinkness = thinkness }
+            };
+            coinsPaid.Should().BeEquivalentTo(expectedCoinList);
+        }
     }
 }
