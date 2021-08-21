@@ -10,15 +10,20 @@ namespace VendingMachine
         private List<Product> products;
         private List<Coin> coinsPaid;
 
-        public Machine(List<Product> products)
+        public Machine(List<Product> products, List<Coin> coinsPaid)
         {
             this.products = products;
-            coinsPaid = new List<Coin>();
+            this.coinsPaid = coinsPaid;
         }
 
         public List<Product> GetProductList()
         {
             return products;
+        }
+
+        public List<Coin> GetAllCoinsPaid()
+        {
+            return coinsPaid;
         }
 
         public Product BuyProduct(string productName)
@@ -31,11 +36,6 @@ namespace VendingMachine
             return products
                    .Where(product => product.Name == productName)
                    .FirstOrDefault();
-        }
-
-        public List<Coin> GetAllCoinsPaid()
-        {
-            return coinsPaid;
         }
 
         public void AddCoinsToPayment(double weight, double diameter, double thinkness)

@@ -20,10 +20,24 @@ namespace UnitTests
                 new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            var machine = new Machine(expectedProducts);
+            var machine = new Machine(expectedProducts, null);
             var products = machine.GetProductList();
 
             products.Should().BeEquivalentTo(expectedProducts);
+        }
+
+        [Fact]
+        public void GetAllCoinsPaidReturnsListOfCoinsThatCustomerPassedIn()
+        {
+            var expectedCoinsPaid = new List<Coin>()
+            {
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
+            };
+
+            var machine = new Machine(null, expectedCoinsPaid);
+            var coinsPaid = machine.GetAllCoinsPaid();
+
+            coinsPaid.Should().BeEquivalentTo(expectedCoinsPaid);
         }
 
         [Fact]
@@ -34,7 +48,7 @@ namespace UnitTests
                 new Product() { Name = "Cola", Price = 1.00 },
             };
 
-            var machine = new Machine(products);
+            var machine = new Machine(products, null);
             var product = machine.BuyProduct("Cola");
 
             product.Should().BeOfType<Product>();
@@ -53,7 +67,7 @@ namespace UnitTests
                 new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            var machine = new Machine(products);
+            var machine = new Machine(products, null);
             var product = machine.BuyProduct(productName);
 
             var expectedProduct = new Product() { Name = productName, Price = price };
@@ -70,7 +84,7 @@ namespace UnitTests
                 new Product() { Name = "Candy", Price = 0.65 }
             };
 
-            var machine = new Machine(products);
+            var machine = new Machine(products, null);
             Action act = () => machine.BuyProduct(desiredProduct);
 
             act.Should().Throw<Exception>().WithMessage($"Unable to purchase {desiredProduct}");
@@ -83,7 +97,7 @@ namespace UnitTests
         [InlineData("Quarter", 0.25, 5.67, 0.955, 1.75)]
         public void AddCoinsToPaymentAppendsCoinsEnteredByCustomer(string name, double value, double weight, double diameter, double thinkness)
         {
-            var machine = new Machine(null);
+            var machine = new Machine(new List<Product>(), new List<Coin>());
             machine.AddCoinsToPayment(weight, diameter, thinkness);
             var coinsPaid = machine.GetAllCoinsPaid();
 
@@ -109,5 +123,11 @@ namespace UnitTests
 
     //         machine.AddCoinsToPayment(weight, diameter, thinkness);
     //     }
+
+
+        private void AddCoinsToPayment()
+        {
+
+        }
     }
 }
