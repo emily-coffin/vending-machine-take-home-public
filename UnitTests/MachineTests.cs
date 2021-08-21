@@ -44,7 +44,7 @@ namespace UnitTests
             var machine = new Machine();
             var value = machine.FindCoinValue(weight, diameter, thinkness);
 
-            value.Value.Should().Be(value);
+            value.Should().Be(expectedValue);
         }
     }
 }
