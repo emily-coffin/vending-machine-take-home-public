@@ -6,14 +6,16 @@ namespace VendingMachine
 {
     public class Machine
     {
+        private List<Product> products = new List<Product>
+        {
+            new Product() { Name = "Cola", Price = 1.00 },
+            new Product() { Name = "Chips", Price = 0.50 },
+            new Product() { Name = "Candy", Price = 0.65 }
+        };
+
         public Product BuyProduct(string productName)
         {
-            var products = new List<Product>
-            {
-                new Product() { Name = "Cola", Price = 1.00 },
-                new Product() { Name = "Chips", Price = 0.50 },
-                new Product() { Name = "Candy", Price = 0.65 }
-            };
+
 
             return products
                    .Where(product => product.Name == productName)
@@ -36,6 +38,12 @@ namespace VendingMachine
                    .Where(coin => coin.Weight == weight && coin.Diameter == diameter && coin.Thinkness == thinkness)
                    .Select(coin => coin.Value)
                    .FirstOrDefault();
+        }
+
+        public bool CanBuyProduct(string productName)
+        {
+            return products
+                   .Any(product => product.Name == productName);
         }
     }
 }
