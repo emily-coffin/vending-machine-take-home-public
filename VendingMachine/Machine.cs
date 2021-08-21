@@ -16,6 +16,11 @@ namespace VendingMachine
             coinsPaid = new List<Coin>();
         }
 
+        public List<Product> GetProductList()
+        {
+            return products;
+        }
+
         public Product BuyProduct(string productName)
         {
             if(!CanBuyProduct(productName))
@@ -28,15 +33,15 @@ namespace VendingMachine
                    .FirstOrDefault();
         }
 
+        public List<Coin> GetAllCoinsPaid()
+        {
+            return coinsPaid;
+        }
+
         public void AddCoinsToPayment(double weight, double diameter, double thinkness)
         {
             var coin = FindCoin(weight, diameter, thinkness);
             coinsPaid.Add(coin);
-        }
-
-        public List<Coin> GetAllCoinsPaid()
-        {
-            return coinsPaid;
         }
 
         private bool CanBuyProduct(string productName)

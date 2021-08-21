@@ -11,6 +11,22 @@ namespace UnitTests
     public class MachineTests
     {
         [Fact]
+        public void GetProductListReturnsListOfProducts()
+        {
+            var expectedProducts = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Chips", Price = 0.50 },
+                new Product() { Name = "Candy", Price = 0.65 }
+            };
+
+            var machine = new Machine(expectedProducts);
+            var products = machine.GetProductList();
+
+            products.Should().BeEquivalentTo(expectedProducts);
+        }
+
+        [Fact]
         public void BuyProductReturnsProductType()
         {
             var products = new List<Product>
@@ -56,7 +72,7 @@ namespace UnitTests
 
             var machine = new Machine(products);
             Action act = () => machine.BuyProduct(desiredProduct);
-            
+
             act.Should().Throw<Exception>().WithMessage($"Unable to purchase {desiredProduct}");
         }
 
@@ -78,18 +94,20 @@ namespace UnitTests
             coinsPaid.Should().BeEquivalentTo(expectedCoinList);
         }
 
-        // [Fact]
-        // public void MakeChangeReturnsChangeToCustomer()
-        // {
-        //     var products = new List<Product>
-        //     {
-        //         new Product() { Name = "Cola", Price = 1.00 },
-        //         new Product() { Name = "Chips", Price = 0.50 },
-        //         new Product() { Name = "Candy", Price = 0.65 }
-        //     };
+    //     [Fact]
+    //     public void MakeChangeReturnsChangeToCustomer()
+    //     {
+    //         var products = new List<Product>
+    //         {
+    //             new Product() { Name = "Cola", Price = 1.00 },
+    //             new Product() { Name = "Chips", Price = 0.50 },
+    //             new Product() { Name = "Candy", Price = 0.65 }
+    //         };
 
-        //     var machine = new Machine(products);
-        //     var product = machine.MakeChange(productName);
-        // }
+    //         var machine = new Machine(products, payment);
+    //         var product = machine.MakeChange(productName);
+
+    //         machine.AddCoinsToPayment(weight, diameter, thinkness);
+    //     }
     }
 }
