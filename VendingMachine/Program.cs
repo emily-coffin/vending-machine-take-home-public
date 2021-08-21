@@ -57,7 +57,7 @@ namespace VendingMachine
             }
             catch(Exception ex)
             {
-                System.Console.WriteLine("There was an error. Please try again.");
+                System.Console.WriteLine("There was an error. Please try again. " + ex.Message);
             }
 
             System.Console.WriteLine($"\n\n ------------------------");

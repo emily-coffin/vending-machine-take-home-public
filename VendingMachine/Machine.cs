@@ -42,7 +42,7 @@ namespace VendingMachine
             }
 
             var prodcut = products
-                          .Where(x => x.Name == productName)
+                          .Where(x => x.Name.ToLower() == productName.ToLower())
                           .FirstOrDefault();
 
             products.Remove(prodcut);
@@ -67,7 +67,7 @@ namespace VendingMachine
         public List<Coin> MakeChange(string productName)
         {
             var prodcutCost = Math.Round(products
-                              .Where(product => product.Name == productName)
+                              .Where(product => product.Name.ToLower() == productName.ToLower())
                               .FirstOrDefault()
                               .Price, 2);
             var totalPaid = Math.Round(coinsPaid.Sum(coin => coin.Value), 2);
@@ -99,7 +99,7 @@ namespace VendingMachine
                 return coinsReturned;
             }
 
-            return null;
+            return new List<Coin>();
         }
 
         public Coin FindCoinByName(string name)
@@ -112,7 +112,7 @@ namespace VendingMachine
         private bool CanBuyProduct(string productName)
         {
             return products
-                   .Any(product => (product.Name == productName) &&
+                   .Any(product => (product.Name.ToLower() == productName.ToLower()) &&
                                    (product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2)));
         }
 
