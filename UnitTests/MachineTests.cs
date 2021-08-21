@@ -12,7 +12,12 @@ namespace UnitTests
         [Fact]
         public void BuyProductReturnsProductType()
         {
-            var machine = new Machine();
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 },
+            };
+
+            var machine = new Machine(products);
             var product = machine.BuyProduct("Cola");
 
             product.Should().BeOfType<Product>();
@@ -24,11 +29,17 @@ namespace UnitTests
         [InlineData("Candy", 0.65)]
         public void BuyProductReturnsProductWhenSelected(string productName, double price)
         {
-            var expectedProduct = new Product() { Name = productName, Price = price };
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Chips", Price = 0.50 },
+                new Product() { Name = "Candy", Price = 0.65 }
+            };
 
-            var machine = new Machine();
+            var machine = new Machine(products);
             var product = machine.BuyProduct(productName);
 
+            var expectedProduct = new Product() { Name = productName, Price = price };
             product.Should().BeEquivalentTo(expectedProduct);
         }
 
@@ -41,7 +52,7 @@ namespace UnitTests
         [InlineData(1.00, 8.1, 1.043, 2.00)]
         public void FindCoinValueIsReturnedCorrectly(double expectedValue, double weight, double diameter, double thinkness)
         {
-            var machine = new Machine();
+            var machine = new Machine(null);
             var value = machine.FindCoinValue(weight, diameter, thinkness);
 
             value.Should().Be(expectedValue);
@@ -53,7 +64,14 @@ namespace UnitTests
         [InlineData("Candy", true)]
         public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
         {
-            var machine = new Machine();
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Chips", Price = 0.50 },
+                new Product() { Name = "Candy", Price = 0.65 }
+            };
+
+            var machine = new Machine(products);
             var isAvailable = machine.CanBuyProduct(productName);
 
             isAvailable.Should().Be(expectedAvailability);
