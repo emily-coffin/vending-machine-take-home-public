@@ -1,4 +1,7 @@
 using System;
+using FluentAssertions;
+using VendingMachine;
+using VendingMachine.Models;
 using Xunit;
 
 namespace UnitTests
@@ -11,7 +14,7 @@ namespace UnitTests
             var machine = new Machine();
             var product = machine.BuyProduct();
 
-            product.Should().Be(new Product())
+            product.Should().BeEquivalentTo(new Product());
         }
     }
 }
