@@ -9,12 +9,12 @@ namespace UnitTests
     public class MachineTests
     {
         [Fact]
-        public void BuyProductReturnsProductWhenSelected()
+        public void BuyProductReturnsProductType()
         {
             var machine = new Machine();
             var product = machine.BuyProduct();
 
-            product.Should().BeEquivalentTo(new Product());
+            product.Should().BeOfType<Product>();
         }
     }
 }
