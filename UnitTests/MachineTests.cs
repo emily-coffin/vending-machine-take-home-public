@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
 using VendingMachine;
 using VendingMachine.Models;
@@ -149,7 +148,7 @@ namespace UnitTests
         }
 
         [Theory]
-        [InlineData("Nickle", 0.05, 5, 0.835, 1.95)]
+        [InlineData("Nickel", 0.05, 5, 0.835, 1.95)]
         [InlineData("Dime", 0.10, 2.268, 0.705, 1.35)]
         [InlineData("Quarter", 0.25, 5.67, 0.955, 1.75)]
         public void AddCoinsToPaymentAppendsCoinsEnteredByCustomer(string name, double value, double weight, double diameter, double thinkness)
@@ -186,7 +185,7 @@ namespace UnitTests
             var coinsPaid = Enumerable
                             .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },5)
                             .ToList();
-            coinsPaid.Add(new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 });
+            coinsPaid.Add(new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 });
 
             var machine = new Machine(products, coinsPaid);
             var change = machine.MakeChange(productName);
@@ -194,9 +193,20 @@ namespace UnitTests
             var expectedChange = new List<Coin>()
             {
                 new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
-                new Coin() { Name = "Nickle", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 }
+                new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 }
             };
             change.Should().BeEquivalentTo(expectedChange);
         }
+
+        [Fact]
+        public void FindCoinByNameReturnsCoinWhenGivenValidName()
+        {
+            var machine = new Machine(new List<Product>(), new List<Coin>());
+            var coin = machine.FindCoinByName("Nickel");
+
+            var expectedCoin = new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 };
+            coin.Should().BeEquivalentTo(expectedCoin);
+        }
+
     }
 }
