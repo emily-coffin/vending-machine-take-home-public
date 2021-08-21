@@ -7,10 +7,12 @@ namespace VendingMachine
     public class Machine
     {
         private List<Product> products;
+        private List<Coin> coinsPaid;
 
         public Machine(List<Product> products)
         {
             this.products = products;
+            coinsPaid = new List<Coin>();
         }
 
         public Product BuyProduct(string productName)
@@ -39,6 +41,17 @@ namespace VendingMachine
         {
             return products
                    .Any(product => product.Name == productName);
+        }
+
+        public void AddCoinsToPayment(double weight, double diameter, double thinkness)
+        {
+            var coin = FindCoin(weight, diameter, thinkness);
+            coinsPaid.Add(coin);
+        }
+
+        public List<Coin> GetAllCoinsPaid()
+        {
+            return coinsPaid;
         }
     }
 }
