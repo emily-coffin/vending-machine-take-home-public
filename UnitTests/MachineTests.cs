@@ -3,12 +3,15 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class UnitTest1
+    public class MachineTests
     {
         [Fact]
-        public void Test1()
+        public void BuyProductReturnsProductWhenSelected()
         {
+            var machine = new Machine();
+            var product = machine.BuyProduct();
 
+            product.Should().Be(new Product())
         }
     }
 }
