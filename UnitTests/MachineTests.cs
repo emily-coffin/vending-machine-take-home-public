@@ -46,7 +46,7 @@ namespace UnitTests
         {
             var products = new List<Product>
             {
-                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Cola", Price = 1.00 }
             };
 
             var coinsPaid = Enumerable
@@ -82,6 +82,30 @@ namespace UnitTests
 
             var expectedProduct = new Product() { Name = productName, Price = price };
             product.Should().BeEquivalentTo(expectedProduct);
+        }
+
+        [Fact]
+        public void BuyProductRemovesProductFromVendingMachine()
+        {
+            var products = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 },
+                new Product() { Name = "Cola", Price = 1.00 }
+            };
+
+            var coinsPaid = Enumerable
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
+                            .ToList();
+
+            var machine = new Machine(products, coinsPaid);
+            machine.BuyProduct("Cola");
+            var productsAvailable = machine.GetProductList();
+
+            var expectedProductList = new List<Product>
+            {
+                new Product() { Name = "Cola", Price = 1.00 }
+            };
+            productsAvailable.Should().BeEquivalentTo(expectedProductList);
         }
 
         [Fact]

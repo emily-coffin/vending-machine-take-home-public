@@ -40,10 +40,14 @@ namespace VendingMachine
             {
                 throw new Exception($"Unable to purchase {productName}");
             }
+            
+            var prodcut = products
+                          .Where(x => x.Name == productName)
+                          .FirstOrDefault();
 
-            return products
-                   .Where(product => product.Name == productName)
-                   .FirstOrDefault();
+            products.Remove(prodcut);
+
+            return prodcut;
         }
 
         public void AddCoinsToPayment(double weight, double diameter, double thinkness)
