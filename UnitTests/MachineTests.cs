@@ -149,21 +149,30 @@ namespace UnitTests
         }
 
         [Theory]
-        [InlineData("Penny", 0.01, 2.5, 0.75, 1.52)]
         [InlineData("Nickle", 0.05, 5, 0.835, 1.95)]
         [InlineData("Dime", 0.10, 2.268, 0.705, 1.35)]
         [InlineData("Quarter", 0.25, 5.67, 0.955, 1.75)]
         public void AddCoinsToPaymentAppendsCoinsEnteredByCustomer(string name, double value, double weight, double diameter, double thinkness)
         {
             var machine = new Machine(new List<Product>(), new List<Coin>());
-            machine.AddCoinsToPayment(weight, diameter, thinkness);
+            var added = machine.AddCoinsToPayment(weight, diameter, thinkness);
             var coinsPaid = machine.GetAllCoinsPaid();
 
             var expectedCoinList = new List<Coin>()
             {
                 new Coin() { Name = name, Value = value, Weight = weight, Diameter = diameter, Thinkness = thinkness }
             };
+            added.Should().BeTrue();
             coinsPaid.Should().BeEquivalentTo(expectedCoinList);
+        }
+
+        [Fact]
+        public void AddCoinsToPaymentRejectsPennyWhenSubmited()
+        {
+            var machine = new Machine(new List<Product>(), new List<Coin>());
+            var added = machine.AddCoinsToPayment(2.5, 0.75, 1.52);
+
+            added.Should().BeFalse();
         }
 
         [Fact]

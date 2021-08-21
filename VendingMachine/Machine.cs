@@ -40,7 +40,7 @@ namespace VendingMachine
             {
                 throw new Exception($"Unable to purchase {productName}");
             }
-            
+
             var prodcut = products
                           .Where(x => x.Name == productName)
                           .FirstOrDefault();
@@ -50,10 +50,12 @@ namespace VendingMachine
             return prodcut;
         }
 
-        public void AddCoinsToPayment(double weight, double diameter, double thinkness)
+        public bool AddCoinsToPayment(double weight, double diameter, double thinkness)
         {
             var coin = FindCoin(weight, diameter, thinkness);
             coinsPaid.Add(coin);
+
+            return true;
         }
 
         public List<Coin> MakeChange(string productName)
