@@ -47,16 +47,16 @@ namespace UnitTests
             value.Should().Be(expectedValue);
         }
 
-        // [Theory]
-        // [InlineData("Cola", true)]
-        // [InlineData("Chips", true)]
-        // [InlineData("Candy", true)]
-        // public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
-        // {
-        //     var machine = new Machine();
-        //     var isAvailable = machine.CanBuyProduct(productName);
+        [Theory]
+        [InlineData("Cola", true)]
+        [InlineData("Chips", true)]
+        [InlineData("Candy", true)]
+        public void CanBuyProductReturnsBoolResponseIfItemIsAvailable(string productName, bool expectedAvailability)
+        {
+            var machine = new Machine();
+            var isAvailable = machine.CanBuyProduct(productName);
 
-        //     isAvailable.Should().Be(expectedAvailability);
-        // }
+            isAvailable.Should().Be(expectedAvailability);
+        }
     }
 }
