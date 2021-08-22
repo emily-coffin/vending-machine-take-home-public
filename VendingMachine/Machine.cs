@@ -16,14 +16,20 @@ namespace VendingMachine
             this.coinsPaid = coinsPaid;
         }
 
-        public List<Product> GetProductList()
+        public List<Product> GetProductList
         {
-            return products;
+            get
+            {
+                return products;
+            }
         }
 
-        public List<Coin> GetAllCoinsPaid()
+        public List<Coin> GetAllCoinsPaid
         {
-            return coinsPaid;
+            get
+            {
+                return coinsPaid;
+            }
         }
 
         public Product BuyProduct(string productName)
@@ -35,6 +41,7 @@ namespace VendingMachine
 
             if(!CanBuyProduct(productName))
             {
+
                 throw new Exception($"Please enter more coins for {productName}.");
             }
 
@@ -63,11 +70,11 @@ namespace VendingMachine
 
         public List<Coin> MakeChange(string productName)
         {
-            var prodcutCost = Math.Round(products
+            var prodcutCost = products
                               .Where(product => product.Name.ToLower() == productName.ToLower())
                               .FirstOrDefault()
-                              .Price, 2);
-            var totalPaid = Math.Round(coinsPaid.Sum(coin => coin.Value), 2);
+                              .Price;
+            var totalPaid = coinsPaid.Sum(coin => coin.Value);
 
             List<Coin> coinsReturned = FindCoinsForChange(prodcutCost, totalPaid);
 
@@ -88,7 +95,7 @@ namespace VendingMachine
                 {
                     foreach (Coin coin in sortedCoins)
                     {
-                        if (coin.Value == totalLeft)
+                        if (coin.Value >= totalLeft)
                         {
                             coinsReturned.Add(coin);
                             totalLeft -= coin.Value;
@@ -114,7 +121,8 @@ namespace VendingMachine
         private bool CanBuyProduct(string productName)
         {
             return products
-                   .Any(product => product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2));
+                   .Any(product => (product.Name.ToLower() == productName.ToLower()) &&
+                                    product.Price <= coinsPaid.Sum(coin => coin.Value));
         }
     }
 }

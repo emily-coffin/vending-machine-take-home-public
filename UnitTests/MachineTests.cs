@@ -21,7 +21,7 @@ namespace UnitTests
             };
 
             var machine = new Machine(expectedProducts, null);
-            var products = machine.GetProductList();
+            var products = machine.GetProductList;
 
             products.Should().BeEquivalentTo(expectedProducts);
         }
@@ -35,7 +35,7 @@ namespace UnitTests
             };
 
             var machine = new Machine(null, expectedCoinsPaid);
-            var coinsPaid = machine.GetAllCoinsPaid();
+            var coinsPaid = machine.GetAllCoinsPaid;
 
             coinsPaid.Should().BeEquivalentTo(expectedCoinsPaid);
         }
@@ -98,7 +98,7 @@ namespace UnitTests
 
             var machine = new Machine(products, coinsPaid);
             machine.BuyProduct("Cola");
-            var productsAvailable = machine.GetProductList();
+            var productsAvailable = machine.GetProductList;
 
             var expectedProductList = new List<Product>
             {
@@ -144,7 +144,7 @@ namespace UnitTests
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
 
-            act.Should().Throw<Exception>().WithMessage($"Please enter more coins for {desiredProduct}.");
+            act.Should().Throw<Exception>().WithMessage($"Please enter more $0.50 for {desiredProduct}.");
         }
 
         [Theory]
@@ -155,7 +155,7 @@ namespace UnitTests
         {
             var machine = new Machine(new List<Product>(), new List<Coin>());
             var added = machine.AddCoinsToPayment(weight, diameter, thinkness);
-            var coinsPaid = machine.GetAllCoinsPaid();
+            var coinsPaid = machine.GetAllCoinsPaid;
 
             var expectedCoinList = new List<Coin>()
             {
@@ -183,7 +183,7 @@ namespace UnitTests
                 new Product() { Name = "Cola", Price = 1.00 }
             };
             var coinsPaid = Enumerable
-                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },5)
+                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },6)
                             .ToList();
             coinsPaid.Add(new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 });
 
@@ -192,6 +192,7 @@ namespace UnitTests
 
             var expectedChange = new List<Coin>()
             {
+                new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
                 new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 },
                 new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 }
             };
