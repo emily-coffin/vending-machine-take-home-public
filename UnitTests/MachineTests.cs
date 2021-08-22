@@ -144,7 +144,7 @@ namespace UnitTests
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
 
-            act.Should().Throw<Exception>().WithMessage($"Please enter more $0.50 for {desiredProduct}.");
+            act.Should().Throw<Exception>().WithMessage($"Please enter $0.50 more for {desiredProduct}.");
         }
 
         [Theory]

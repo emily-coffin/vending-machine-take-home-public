@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using VendingMachine.Models;
 
@@ -39,15 +40,15 @@ namespace VendingMachine
                 throw new Exception($"Sorry we are sold out of {productName}.");
             }
 
-            if(!CanBuyProduct(productName))
-            {
-
-                throw new Exception($"Please enter more coins for {productName}.");
-            }
-
             var prodcut = products
                           .Where(x => x.Name.ToLower() == productName.ToLower())
                           .FirstOrDefault();
+
+            if(prodcut.Price > coinsPaid.Sum(coin => coin.Value))
+            {
+                var coinsNeeded = prodcut.Price - coinsPaid.Sum(coin => coin.Value);
+                throw new Exception($"Please enter {coinsNeeded.ToString("C", CultureInfo.CurrentCulture)} more for {productName}.");
+            }
 
             products.Remove(prodcut);
 
@@ -116,13 +117,6 @@ namespace VendingMachine
         {
             return products
                    .Any(product => (product.Name.ToLower() == productName.ToLower()));
-        }
-
-        private bool CanBuyProduct(string productName)
-        {
-            return products
-                   .Any(product => (product.Name.ToLower() == productName.ToLower()) &&
-                                    product.Price <= coinsPaid.Sum(coin => coin.Value));
         }
     }
 }
