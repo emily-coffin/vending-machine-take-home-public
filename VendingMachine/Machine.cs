@@ -92,17 +92,17 @@ namespace VendingMachine
 
             while (totalOver > 0)
             {
-                totalOver =  Math.Round(totalOver, 2);
+                totalOver = Math.Round(totalOver, 2);
 
-                if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Quarter").Value) > 0)
+                if (TotalDivisibleByCoinValue("Quarter", totalOver))
                 {
                     totalOver = AddCoinToChangeList("Quarter", totalOver, coinsReturned);
                 }
-                else if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Dime").Value) > 0)
+                else if (TotalDivisibleByCoinValue("Dime", totalOver))
                 {
                     totalOver = AddCoinToChangeList("Dime", totalOver, coinsReturned);
                 }
-                else if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Nickel").Value) > 0)
+                else if (TotalDivisibleByCoinValue("Nickel", totalOver))
                 {
                     totalOver = AddCoinToChangeList("Nickel", totalOver, coinsReturned);
                 }
@@ -113,6 +113,11 @@ namespace VendingMachine
             }
 
             return coinsReturned;
+        }
+
+        private static bool TotalDivisibleByCoinValue(string coinName, double totalOver)
+        {
+            return Math.Floor(totalOver / CoinHelper.FindCoinByName(coinName).Value) > 0;
         }
 
         private static double AddCoinToChangeList(string coinName, double totalOver, List<Coin> coinsReturned)
