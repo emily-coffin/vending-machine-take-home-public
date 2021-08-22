@@ -84,30 +84,6 @@ namespace UnitTests
         }
 
         [Fact]
-        public void BuyProductRemovesProductFromVendingMachine()
-        {
-            var products = new List<Product>
-            {
-                new Product() { Name = "Cola", Price = 1.00 },
-                new Product() { Name = "Cola", Price = 1.00 }
-            };
-
-            var coinsPaid = Enumerable
-                            .Repeat(new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }, 4)
-                            .ToList();
-
-            var machine = new Machine(products, coinsPaid);
-            machine.BuyProduct("Cola");
-            var productsAvailable = machine.GetProductList;
-
-            var expectedProductList = new List<Product>
-            {
-                new Product() { Name = "Cola", Price = 1.00 }
-            };
-            productsAvailable.Should().BeEquivalentTo(expectedProductList);
-        }
-
-        [Fact]
         public void BuyProductThrowsExceptionWhenProductIsOutOfStock()
         {
             var desiredProduct = "Cola";
@@ -247,13 +223,14 @@ namespace UnitTests
             };
 
             var machine = new Machine(products, new List<Coin>());
-            var change = machine.RemoveProduct(productOne);
+            var removed = machine.RemoveProduct(productOne);
 
             var expectedProducts = new List<Product>
             {
                 productTwo
             };
-            change.Should().BeEquivalentTo(expectedProducts);
+            removed.Should().BeTrue();
+            machine.GetProductList.Should().BeEquivalentTo(expectedProducts);
         }
     }
 }

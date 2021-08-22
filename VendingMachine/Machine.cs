@@ -50,9 +50,12 @@ namespace VendingMachine
                 throw new Exception($"Please enter {coinsNeeded.ToString("C", CultureInfo.CurrentCulture)} more for {productName}.");
             }
 
-            products.Remove(prodcut);
-
             return prodcut;
+        }
+
+        public bool RemoveProduct(Product product)
+        {
+            return products.Remove(product);
         }
 
         public bool AddCoinsToPayment(double weight, double diameter, double thinkness)
