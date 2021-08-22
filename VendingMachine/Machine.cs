@@ -69,34 +69,40 @@ namespace VendingMachine
                               .Price, 2);
             var totalPaid = Math.Round(coinsPaid.Sum(coin => coin.Value), 2);
 
+            List<Coin> coinsReturned = FindCoinsForChange(prodcutCost, totalPaid);
+
+            return coinsReturned;
+        }
+
+        private static List<Coin> FindCoinsForChange(double prodcutCost, double totalPaid)
+        {
+            var coinsReturned = new List<Coin>();
+
             if(totalPaid > prodcutCost)
             {
                 var sortedCoins = CoinHelper.AvailableCoins.OrderByDescending(coin => coin.Value);
                 var totalOver = totalPaid - prodcutCost;
-                var coinsReturned = new List<Coin>();
                 var totalLeft = totalOver;
 
-                while(totalLeft >= totalOver)
+                while (totalLeft >= totalOver)
                 {
-                    foreach(Coin coin in sortedCoins)
+                    foreach (Coin coin in sortedCoins)
                     {
-                        if(coin.Value == totalLeft)
+                        if (coin.Value == totalLeft)
                         {
                             coinsReturned.Add(coin);
                             totalLeft -= coin.Value;
                         }
-                        else if(coin.Value < totalLeft)
+                        else if (coin.Value < totalLeft)
                         {
                             coinsReturned.Add(coin);
                             totalLeft -= coin.Value;
                         }
                     }
                 }
-
-                return coinsReturned;
             }
 
-            return new List<Coin>();
+            return coinsReturned;
         }
 
         private bool ItemInStock(string productName)
