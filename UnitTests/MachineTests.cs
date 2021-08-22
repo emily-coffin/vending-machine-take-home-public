@@ -233,16 +233,5 @@ namespace UnitTests
 
             change.Should().BeEquivalentTo(new List<Coin>());
         }
-
-        [Fact]
-        public void FindCoinByNameReturnsCoinWhenGivenValidName()
-        {
-            var machine = new Machine(new List<Product>(), new List<Coin>());
-            var coin = machine.FindCoinByName("Nickel");
-
-            var expectedCoin = new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 };
-            coin.Should().BeEquivalentTo(expectedCoin);
-        }
-
     }
 }

@@ -7,14 +7,6 @@ namespace VendingMachine
 {
     public class Machine
     {
-        private List<Coin> coins = new List<Coin>()
-        {
-            new Coin() { Name = "Penny", Value = 0.01, Weight = 2.5, Diameter = 0.75, Thinkness = 1.52 },
-            new Coin() { Name = "Nickel", Value = 0.05, Weight = 5, Diameter = 0.835, Thinkness = 1.95 },
-            new Coin() { Name = "Dime", Value = 0.10, Weight = 2.268, Diameter = 0.705, Thinkness = 1.35 },
-            new Coin() { Name = "Quarter", Value = 0.25, Weight = 5.67, Diameter = 0.955, Thinkness = 1.75 }
-        };
-
         private List<Product> products = new List<Product>();
         private List<Coin> coinsPaid = new List<Coin>();
 
@@ -57,7 +49,7 @@ namespace VendingMachine
 
         public bool AddCoinsToPayment(double weight, double diameter, double thinkness)
         {
-            var coin = FindCoinByProperties(weight, diameter, thinkness);
+            var coin = CoinHelper.FindCoinByProperties(weight, diameter, thinkness);
 
             if(coin.Name == "Penny")
             {
@@ -79,7 +71,7 @@ namespace VendingMachine
 
             if(totalPaid > prodcutCost)
             {
-                var sortedCoins = coins.OrderByDescending(coin => coin.Value);
+                var sortedCoins = CoinHelper.AvailableCoins.OrderByDescending(coin => coin.Value);
                 var totalOver = totalPaid - prodcutCost;
                 var coinsReturned = new List<Coin>();
                 var totalLeft = totalOver;
@@ -107,13 +99,6 @@ namespace VendingMachine
             return new List<Coin>();
         }
 
-        public Coin FindCoinByName(string name)
-        {
-            return coins
-                   .Where(coin => coin.Name == name)
-                   .FirstOrDefault();
-        }
-
         private bool ItemInStock(string productName)
         {
             return products
@@ -124,13 +109,6 @@ namespace VendingMachine
         {
             return products
                    .Any(product => product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2));
-        }
-
-        private Coin FindCoinByProperties(double weight, double diameter, double thinkness)
-        {
-            return coins
-                   .Where(coin => coin.Weight == weight && coin.Diameter == diameter && coin.Thinkness == thinkness)
-                   .FirstOrDefault();
         }
     }
 }
