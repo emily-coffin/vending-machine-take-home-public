@@ -108,7 +108,7 @@ namespace UnitTests
         }
 
         [Fact]
-        public void BuyProductThrowsExceptionWhenProductIsMissing()
+        public void BuyProductThrowsExceptionWhenProductIsOutOfStock()
         {
             var desiredProduct = "Cola";
             var products = new List<Product>
@@ -125,7 +125,7 @@ namespace UnitTests
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
 
-            act.Should().Throw<Exception>().WithMessage($"Unable to purchase {desiredProduct}");
+            act.Should().Throw<Exception>().WithMessage($"Sorry we are sold out of {desiredProduct}.");
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace UnitTests
             var machine = new Machine(products, coinsPaid);
             Action act = () => machine.BuyProduct(desiredProduct);
 
-            act.Should().Throw<Exception>().WithMessage($"Unable to purchase {desiredProduct}");
+            act.Should().Throw<Exception>().WithMessage($"Please enter more coins for {desiredProduct}.");
         }
 
         [Theory]

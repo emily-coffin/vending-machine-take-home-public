@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using VendingMachine.Models;
 
 namespace VendingMachine
@@ -37,9 +36,14 @@ namespace VendingMachine
 
         public Product BuyProduct(string productName)
         {
+            if(!ItemInStock(productName))
+            {
+                throw new Exception($"Sorry we are sold out of {productName}.");
+            }
+
             if(!CanBuyProduct(productName))
             {
-                throw new Exception($"Unable to purchase {productName}");
+                throw new Exception($"Please enter more coins for {productName}.");
             }
 
             var prodcut = products
@@ -110,11 +114,16 @@ namespace VendingMachine
                    .FirstOrDefault();
         }
 
+        private bool ItemInStock(string productName)
+        {
+            return products
+                   .Any(product => (product.Name.ToLower() == productName.ToLower()));
+        }
+
         private bool CanBuyProduct(string productName)
         {
             return products
-                   .Any(product => (product.Name.ToLower() == productName.ToLower()) &&
-                                   (product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2)));
+                   .Any(product => product.Price <= Math.Round(coinsPaid.Sum(coin => coin.Value), 2));
         }
 
         private Coin FindCoinByProperties(double weight, double diameter, double thinkness)
