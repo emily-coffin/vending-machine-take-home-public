@@ -74,23 +74,26 @@ namespace VendingMachine
                     var productBought = BuyProduct(machine);
                     if(productBought)
                     {
-                        break;
+                        adding = false;
                     }
-                }
-
-                var possibleCoins = new String[] { "Penny", "Nickel", "Dime", "Quarter" };
-                var coin = CoinHelper.FindCoinByName(possibleCoins[input - 1]);
-
-                if(coin.Name == "Penny")
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("Invalid Coin Was Given.");
-                    System.Console.WriteLine($"CHANGE: {coin.Value.ToString("C", CultureInfo.CurrentCulture)}"); // Display in USD
-                    Console.ResetColor();
+                    WriteBlankLines(1);
                 }
                 else
                 {
-                    machine.AddCoinsToPayment(coin.Weight, coin.Diameter, coin.Thinkness);
+                    var possibleCoins = new String[] { "Penny", "Nickel", "Dime", "Quarter" };
+                    var coin = CoinHelper.FindCoinByName(possibleCoins[input - 1]);
+
+                    if(coin.Name == "Penny")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine("Invalid Coin Was Given.");
+                        System.Console.WriteLine($"CHANGE: {coin.Value.ToString("C", CultureInfo.CurrentCulture)}"); // Display in USD
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        machine.AddCoinsToPayment(coin.Weight, coin.Diameter, coin.Thinkness);
+                    }
                 }
             }
         }
