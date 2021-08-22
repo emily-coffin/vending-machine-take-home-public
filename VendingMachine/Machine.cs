@@ -94,33 +94,34 @@ namespace VendingMachine
             {
                 totalOver =  Math.Round(totalOver, 2);
 
-                if (Math.Round(totalOver / CoinHelper.FindCoinByName("Quarter").Value) > 0)
+                if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Quarter").Value) > 0)
                 {
-                    var coin = CoinHelper.FindCoinByName("Quarter");
-                    coinsReturned.Add(coin);
-                    totalOver -= coin.Value;
+                    totalOver = AddCoinToChangeList("Quarter", totalOver, coinsReturned);
                 }
-                else if (Math.Round(totalOver / CoinHelper.FindCoinByName("Dime").Value) > 0)
+                else if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Dime").Value) > 0)
                 {
-                    var coin = CoinHelper.FindCoinByName("Dime");
-                    coinsReturned.Add(coin);
-                    totalOver -= coin.Value;
+                    totalOver = AddCoinToChangeList("Dime", totalOver, coinsReturned);
                 }
-                else if (Math.Round(totalOver / CoinHelper.FindCoinByName("Nickel").Value) > 0)
+                else if (Math.Floor(totalOver / CoinHelper.FindCoinByName("Nickel").Value) > 0)
                 {
-                    var coin = CoinHelper.FindCoinByName("Nickel");
-                    coinsReturned.Add(coin);
-                    totalOver -= coin.Value;
+                    totalOver = AddCoinToChangeList("Nickel", totalOver, coinsReturned);
                 }
                 else
                 {
-                    var coin = CoinHelper.FindCoinByName("Penny");
-                    coinsReturned.Add(coin);
-                    totalOver -= coin.Value;
+                    totalOver = AddCoinToChangeList("Penny", totalOver, coinsReturned);
                 }
             }
 
             return coinsReturned;
+        }
+
+        private static double AddCoinToChangeList(string coinName, double totalOver, List<Coin> coinsReturned)
+        {
+            var coin = CoinHelper.FindCoinByName(coinName);
+            coinsReturned.Add(coin);
+            totalOver -= coin.Value;
+
+            return totalOver;
         }
 
         private bool ItemInStock(string productName)
