@@ -234,5 +234,26 @@ namespace UnitTests
 
             change.Should().BeEquivalentTo(new List<Coin>());
         }
+
+        [Fact]
+        public void RemoveProductWillRemoveProductFromProductList()
+        {
+            var productOne = new Product() { Name = "Cola", Price = 1.00 };
+            var productTwo = new Product() { Name = "Cola", Price = 1.00 };
+            var products = new List<Product>
+            {
+                productOne,
+                productTwo
+            };
+
+            var machine = new Machine(products, new List<Coin>());
+            var change = machine.RemoveProduct(productOne);
+
+            var expectedProducts = new List<Product>
+            {
+                productTwo
+            };
+            change.Should().BeEquivalentTo(expectedProducts);
+        }
     }
 }
