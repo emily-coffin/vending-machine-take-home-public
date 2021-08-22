@@ -87,29 +87,36 @@ namespace VendingMachine
 
         private static List<Coin> FindCoinsForChange(double prodcutCost, double totalPaid)
         {
+            var totalOver = Math.Round(totalPaid - prodcutCost, 2);
             var coinsReturned = new List<Coin>();
 
-            if(totalPaid > prodcutCost)
+            while (totalOver > 0)
             {
-                var sortedCoins = CoinHelper.AvailableCoins.OrderByDescending(coin => coin.Value);
-                var totalOver = totalPaid - prodcutCost;
-                var totalLeft = totalOver;
+                totalOver =  Math.Round(totalOver, 2);
 
-                while (totalLeft >= totalOver)
+                if (Math.Round(totalOver / CoinHelper.FindCoinByName("Quarter").Value) > 0)
                 {
-                    foreach (Coin coin in sortedCoins)
-                    {
-                        if (coin.Value >= totalLeft)
-                        {
-                            coinsReturned.Add(coin);
-                            totalLeft -= coin.Value;
-                        }
-                        else if (coin.Value < totalLeft)
-                        {
-                            coinsReturned.Add(coin);
-                            totalLeft -= coin.Value;
-                        }
-                    }
+                    var coin = CoinHelper.FindCoinByName("Quarter");
+                    coinsReturned.Add(coin);
+                    totalOver -= coin.Value;
+                }
+                else if (Math.Round(totalOver / CoinHelper.FindCoinByName("Dime").Value) > 0)
+                {
+                    var coin = CoinHelper.FindCoinByName("Dime");
+                    coinsReturned.Add(coin);
+                    totalOver -= coin.Value;
+                }
+                else if (Math.Round(totalOver / CoinHelper.FindCoinByName("Nickel").Value) > 0)
+                {
+                    var coin = CoinHelper.FindCoinByName("Nickel");
+                    coinsReturned.Add(coin);
+                    totalOver -= coin.Value;
+                }
+                else
+                {
+                    var coin = CoinHelper.FindCoinByName("Penny");
+                    coinsReturned.Add(coin);
+                    totalOver -= coin.Value;
                 }
             }
 
