@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Newtonsoft.Json;
 using VendingMachine.Models;
 
 namespace VendingMachine
@@ -9,8 +11,7 @@ namespace VendingMachine
     {
         static void Main(string[] args)
         {
-            // Happy path
-            System.Console.WriteLine($"\n\n ------------------------");
+            WriteHeaderLine();
             var machine = new Machine(new List<Product>
                                       {
                                         new Product() { Name = "Cola", Price = 1.00 },
@@ -19,51 +20,127 @@ namespace VendingMachine
                                       },
                                       new List<Coin>());
 
-            var productsAvailable = machine.GetProductList();
+            DisplayPaymentOptions(machine);
+            WriteBlankLines(1);
+            TakePayment(machine);
+            WriteHeaderLine();
+        }
+
+        private static void DisplayProductsAvailable(Machine machine)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
             System.Console.WriteLine($"The following Products are available:");
-            foreach(Product product in productsAvailable)
+
+            var productsAvailable = machine.GetProductList;
+            foreach (Product product in productsAvailable)
             {
-               System.Console.WriteLine($"{product.Name} - {Math.Round(product.Price, 2)}");
+                System.Console.WriteLine($"{product.Name} - {product.Price.ToString("C", CultureInfo.CurrentCulture)}"); //Displays in USD
             }
+            Console.ResetColor();
 
-            System.Console.WriteLine($"\n\n");
+            WriteHeaderLine();
+        }
 
-            System.Console.WriteLine($"Please enter coins: \n 1. Nickel \n 2. Dime \n 3. Quarter \n 4. Done \n\n");
+        private static void DisplayPaymentOptions(Machine machine)
+        {
+            System.Console.WriteLine($"Please enter coins:");
+            System.Console.WriteLine($"1. Penny");
+            System.Console.WriteLine($"2. Nickel");
+            System.Console.WriteLine($"3. Dime");
+            System.Console.WriteLine($"4. Quarter");
+            System.Console.WriteLine($"5. Done");
+        }
+
+        public static void TakePayment(Machine machine)
+        {
             var adding = true;
-            while(adding)
+            while (adding)
             {
-                System.Console.WriteLine("INSERT COIN");
+                var totalCoinsGiven = machine.GetAllCoinsPaid.Sum(coin => coin.Value);
+                if (totalCoinsGiven == 0)
+                {
+                    System.Console.WriteLine("INSERT COIN");
+                }
+                else
+                {
+                    System.Console.WriteLine($"Total Amount Given: {totalCoinsGiven.ToString("C", CultureInfo.CurrentCulture)}");
+                }
+
                 var input = Convert.ToInt32(Console.ReadLine());
 
-                if(input == 4)
+                if (input == 5)
                 {
-                    break;
+                    var productBought = BuyProduct(machine);
+                    if(productBought)
+                    {
+                        break;
+                    }
                 }
-                var possibleCoins = new String[] { "Nickel", "Dime", "Quarter" };
-                var coin = machine.FindCoinByName(possibleCoins[input - 1]);
-                machine.AddCoinsToPayment(coin.Weight, coin.Diameter, coin.Thinkness);
-            }
 
-            System.Console.WriteLine($"Which product would you like (use product name)");
+                var possibleCoins = new String[] { "Penny", "Nickel", "Dime", "Quarter" };
+                var coin = CoinHelper.FindCoinByName(possibleCoins[input - 1]);
+
+                if(coin.Name == "Penny")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    System.Console.WriteLine("Invalid Coin Was Given.");
+                    System.Console.WriteLine($"CHANGE: {coin.Value.ToString("C", CultureInfo.CurrentCulture)}"); // Display in USD
+                    Console.ResetColor();
+                }
+                else
+                {
+                    machine.AddCoinsToPayment(coin.Weight, coin.Diameter, coin.Thinkness);
+                }
+            }
+        }
+
+        private static bool BuyProduct(Machine machine)
+        {
+            DisplayProductsAvailable(machine);
+            System.Console.WriteLine($"Which product would you like? (use product name)");
             var productChosen = Console.ReadLine().ToString();
 
             try
             {
-                System.Console.WriteLine($"\n\n");
-                
+                WriteBlankLines(1);
+
                 var change = machine.MakeChange(productChosen);
                 var product = machine.BuyProduct(productChosen);
 
-                System.Console.WriteLine($"Product: {productChosen}");
-                System.Console.WriteLine($"CHANGE: ${Math.Round(change.Sum(x => x.Value), 2)}");
-                System.Console.WriteLine("THANK YOU");
-            }
-            catch(Exception ex)
-            {
-                System.Console.WriteLine("There was an error. Please try again. " + ex.Message);
-            }
+                System.Console.WriteLine($"PRODUCT: {productChosen}");
+                System.Console.WriteLine($"CHANGE: {change.Sum(x => x.Value).ToString("C", CultureInfo.CurrentCulture)}"); // Display in USD
+                System.Console.WriteLine($"COINS GIVEN: {JsonConvert.SerializeObject(change.Select(coin => coin.Name).ToList())}");
 
-            System.Console.WriteLine($"\n\n ------------------------");
+                WriteBlankLines(1);
+
+                System.Console.WriteLine("THANK YOU");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+
+                return false;
+            }
+        }
+
+        private static void WriteHeaderLine()
+        {
+            WriteBlankLines(1);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            System.Console.WriteLine("--------------------------------------------------");
+            Console.ResetColor();
+            WriteBlankLines(1);
+        }
+
+        private static void WriteBlankLines(int times)
+        {
+            for(int i = 0; i <= times; i++)
+            {
+                Console.WriteLine();
+            }
         }
     }
 }
