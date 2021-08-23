@@ -31,20 +31,39 @@ Note: The isolation of the core machine methods from the console will help with 
 
 ### Prerequisites
 
-1. Please make sure to install [.NET cli](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/intro) before running the program.
-1. The scripts are written in bash and are best to run on Unix/Linux/WSL terminal.
+Make sure you have [Docker](https://docs.docker.com/get-docker/) installed.
 
-## Run Tests
+To start Docker environment run the following command:
 
-To run test suite use the build and run-tests script within the Scripts directory.
+```sh
+docker run --name vendingmachine --rm -it -v $PWD:/project -w /project mcr.microsoft.com/dotnet/sdk:3.1 bash
+```
+
+Within your Docker container run the following command to install packages
+
+```sh
+apt-get update; \
+  apt-get install -y locales locales-all && \
+  export LC_ALL=en_US.UTF-8 && \
+  export LANG=en_US.UTF-8 && \
+  export LANGUAGE=en_US.UTF-8
+```
+
+### Run Tests
+
+❗ Make sure you have started your Docker container first. ❗
+
+To run test suite use the build and run-tests script within the Scripts directory within your Docker container.
 
 ```sh
 ./scripts/build.sh && ./scripts/run_tests.sh
 ```
 
-## Run Console App
+### Run Console App
 
-To run test suite use the build and run script within the Scripts directory.
+❗ Make sure you have started your Docker container first. ❗
+
+To run test suite use the build and run script within the Scripts directory within your Docker container.
 
 ```sh
 ./scripts/build.sh && ./scripts/run.sh
