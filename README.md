@@ -36,17 +36,7 @@ Make sure you have [Docker](https://docs.docker.com/get-docker/) installed.
 To start Docker environment run the following command:
 
 ```sh
-docker run --name vendingmachine --rm -it -v $PWD:/project -w /project mcr.microsoft.com/dotnet/sdk:3.1 bash
-```
-
-Within your Docker container run the following command to install packages
-
-```sh
-apt-get update; \
-  apt-get install -y locales locales-all && \
-  export LC_ALL=en_US.UTF-8 && \
-  export LANG=en_US.UTF-8 && \
-  export LANGUAGE=en_US.UTF-8
+docker build -t vendingmachine . && docker run --name vendingmachine --rm -it -v $PWD:/project -w /project vendingmachine bash
 ```
 
 ### Run Tests
